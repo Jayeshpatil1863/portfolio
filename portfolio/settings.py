@@ -1,20 +1,27 @@
-
+import os
+import dj_database_url  ### ADDED: To connect to Neon DB
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(_file_).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q3qk=1_a-(%!e@kcu3xwo_q-%p=!o#-k2%rh$8souyf!&ctjpr'
+# ### CHANGED: Tries to get the key from Render, falls back to insecure for local usage
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-q3qk=1_a-(%!e@kcu3xwo_q-%p=!o#-k2%rh$8souyf!&ctjpr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# ### CHANGED: Automatically turns off Debug mode if running on Render
+DEBUG = 'RENDER' not in os.environ
 
+# ### CHANGED: Automatically adds your Render URL to allowed hosts
 ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -31,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', ### ADDED: Must be right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,12 +71,22 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# ### CHANGED: Logic to switch between SQLite (Local) and Neon (Render)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# If Render provides a Database URL (Neon), use it instead of SQLite
+database_url = os.environ.get("DATABASE_URL")
+if database_url:
+    DATABASES['default'] = dj_database_url.parse(
+        database_url,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 
 
 # Password validation
@@ -106,6 +124,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# ### ADDED: This tells Django where to collect files for Render to serve
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# ### ADDED: Enables WhiteNoise to compress and serve your CSS/JS
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'first' / 'static'
