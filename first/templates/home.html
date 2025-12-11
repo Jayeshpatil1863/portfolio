@@ -5,7 +5,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jayesh Patil — Backend Developer</title>
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ✅ Bootstrap Icons (Instagram icon ke liye important) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
     :root{
       --accent:#00ffc3;
@@ -19,6 +25,49 @@
       --shadow: 0 10px 30px rgba(0,0,0,0.6);
       --glass-blur: 10px;
     }
+
+    /* ---------------- SOCIAL ICON (INSTAGRAM) ---------------- */
+    .social-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      color:white;
+      background: linear-gradient(45deg,#833ab4,#fd1d1d,#fcb045);
+      box-shadow: 0 0 12px rgba(253,29,29,0.6);
+      transition: 0.3s ease;
+      text-decoration:none;
+      font-size:1.3rem;
+      margin-left:8px; /* thoda gap */
+      border:none;     /* contact a ke border se alag */
+      padding:0;
+    }
+
+    .social-icon:hover{
+      transform: scale(1.15) rotate(6deg);
+      box-shadow: 0 0 25px rgba(253,29,29,0.9);
+      color:white;
+    }
+
+    /* ================= Premium Social Icons (All) ================= */
+      .social-icon.github{
+        background: linear-gradient(135deg,#232526,#414345);
+        box-shadow: 0 0 12px rgba(255,255,255,0.3);
+      }
+
+      .social-icon.linkedin{
+        background: linear-gradient(135deg,#0077b5,#00a0dc);
+        box-shadow: 0 0 12px rgba(0,160,220,0.6);
+      }
+
+      .social-icon.whatsapp{
+        background: linear-gradient(135deg,#25D366,#128C7E);
+        box-shadow: 0 0 12px rgba(37,211,102,0.6);
+      }
+
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -113,7 +162,12 @@
 
     /* layout */
     .layout{ display:grid; grid-template-columns: 2fr 1fr; gap:20px; margin-top:20px; }
-    @media (max-width:920px){ .layout{ grid-template-columns: 1fr; } .hero{ flex-direction:column; align-items:center; text-align:center } .hero-content{text-align:center} .hero-left{ order:0 } }
+    @media (max-width:920px){
+      .layout{ grid-template-columns: 1fr; }
+      .hero{ flex-direction:column; align-items:center; text-align:center }
+      .hero-content{text-align:center}
+      .hero-left{ order:0 }
+    }
 
     .card{ padding:18px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid var(--glass-border); box-shadow: 0 8px 30px rgba(0,0,0,0.5); backdrop-filter: blur(8px); }
 
@@ -136,10 +190,28 @@
     .bar{ background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent); border-radius:999px; padding:6px; }
     .bar-inner{ height:8px; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:60%; box-shadow:0 6px 18px rgba(0,255,195,0.08); transition: width .6s ease; }
 
-    .contact a{ display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:8px; background:transparent; color:var(--muted); text-decoration:none; border:1px solid rgba(255,255,255,0.03); margin-right:8px; font-weight:600; }
+    /* ✅ Yaha normal contact links ke liye styling, insta icon ko exclude */
+    .contact a:not(.social-icon){
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:8px;
+      background:transparent;
+      color:var(--muted);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+      margin-right:8px;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    .contact a:not(.social-icon):hover{
+      border-color:var(--accent);
+      color:#fff;
+    }
 
     footer{ text-align:center; margin-top:26px; color:var(--muted); font-size:13px; }
-
 
     /* ========== Screenshots thumbnails & modal ========== */
     .screenshots { display:flex; gap:8px; margin-top:8px; align-items:center; flex-wrap:wrap; }
@@ -166,7 +238,74 @@
       .thumb{ width:84px; height:56px; }
       .modal-caption{ bottom:-52px; font-size:12px; }
     }
-    /* ========== end modal CSS ========== */
+    .survey-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.survey-box{
+  background:#0f172a;
+  padding:25px;
+  border-radius:14px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(0,255,195,0.4);
+  animation:popupScale 0.4s ease;
+}
+
+@keyframes popupScale{
+  from{transform:scale(0.7); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+
+.survey-box h3{
+  color:#00ffc3;
+  margin-bottom:8px;
+}
+
+.survey-box input,
+.survey-box textarea{
+  width:100%;
+  margin-top:10px;
+  padding:8px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+
+.survey-box button{
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(90deg,#00ffc3,#00ffea);
+  font-weight:700;
+  cursor:pointer;
+}
+
+.close-btn{
+  position:absolute;
+  right:14px;
+  top:8px;
+  background:none;
+  border:none;
+  font-size:22px;
+  color:white;
+  cursor:pointer;
+}
+
+.skip-text{
+  margin-top:10px;
+  font-size:13px;
+  color:#aaa;
+  cursor:pointer;
+}
 
   </style>
 </head>
@@ -178,6 +317,8 @@
         <div class="glow" aria-hidden="true"></div>
         <img class="profile" src="{% static 'images/jayeshpatil.jpg' %}" alt="Jayesh Patil" tabindex="0">
       </div>
+      
+
 
       <div class="hero-content">
         <h1>Hi, I’m <span>Jayesh Patil</span></h1>
@@ -190,7 +331,7 @@
         <div class="cta-row">
           <a class="btn" href="#projects">View My Projects</a>
           <a class="ghost" href="#contact">Contact</a>
-          <a class="btn" href="{% static 'resume/JayeshPatil(2).pdf' %}" download>Resume</a>
+          <a class="btn" href="{% static 'resume/Jay_Patil.pdf' %}" download>Resume</a>
         </div>
       </div>
     </section>
@@ -220,11 +361,10 @@
               <p class="small">Full-stack grocery app with product browsing, category filters, cart & order flow and admin CRUD.</p>
               <div class="meta">
                 <div class="small">Tech: Django, sqlite3, HTML, CSS</div>
-                <a href="https://github.com/Jayeshpatil1863/grocery-platform  
-                " target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/Jayeshpatil1863/grocery-platform" target="_blank" rel="noopener">GitHub</a>
               </div>
 
-              <!-- screenshots (add files in static/images/) -->
+              <!-- screenshots -->
               <div class="screenshots" style="margin-top:10px;">
                 <img class="thumb"
                      src="{% static 'images/groceryui1.png' %}"
@@ -387,11 +527,33 @@
         <!-- Contact -->
         <div id="contact" class="card contact" style="margin-top:12px;">
           <div class="section-title">Contact</div>
-          <p class="small">Email: <a href="mailto:patiljayesh2118@gmail.com" style="color:var(--accent); font-weight:600;">patiljayesh2118@gmail.com</a></p>
+          <p class="small">
+            Email:
+            <a href="mailto:patiljayesh2118@gmail.com" style="color:var(--accent); font-weight:600;">
+              patiljayesh2118@gmail.com
+            </a>
+          </p>
           <p class="small" style="margin-top:6px;">
-            <a href="https://github.com/Jayeshpatil1863" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://www.linkedin.com/in/jayeshpatil02?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://wa.me/qr/AQ5OJCLWLPGOA1" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="https://github.com/Jayeshpatil1863" target="_blank"
+              class="social-icon github">
+              <i class="bi bi-github"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/jayeshpatil02" target="_blank"
+              class="social-icon linkedin">
+              <i class="bi bi-linkedin"></i>
+            </a>
+
+            <a href="https://wa.me/qr/AQ5OJCLWLPGOA1" target="_blank"
+              class="social-icon whatsapp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+
+            <a href="https://www.instagram.com/mr.jayesh_02" target="_blank"
+              class="social-icon">
+              <i class="bi bi-instagram"></i>
+            </a>
+
           </p>
         </div>
       </aside>
@@ -453,7 +615,6 @@
         const src = t.getAttribute('data-large') || t.src;
         const caption = t.getAttribute('data-caption') || t.alt || '';
 
-        // build modal
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
         overlay.setAttribute('role','dialog');
@@ -472,7 +633,6 @@
         const closeBtn = overlay.querySelector('.modal-close');
         closeBtn.focus();
 
-        // click to close (overlay background or close button)
         overlay.addEventListener('click', function(ev){
           if(ev.target === overlay || ev.target === closeBtn){
             overlay.remove();
@@ -480,7 +640,6 @@
           }
         });
 
-        // close on Escape
         const onKey = function(k){
           if(k.key === 'Escape'){
             overlay.remove();
